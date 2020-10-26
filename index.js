@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import End from './end';
+import Start from './Start';
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <div>
+          <Route path="/" exact component={End} />
+          <Route path="/Start"  component={Start} />
+      </div>
+    </BrowserRouter>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );
