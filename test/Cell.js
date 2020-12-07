@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import { mineColor } from "../util/mineColors";
 import Circle from "./Circle";
 
-export default function Cell({ data, updateBoard, flagCell, flagDei}) {
+export default function Cell({ data, updateBoard, flagCell, flagDei,sumFlag}) {
   const style = {
     block: {
       width: 40,
@@ -26,21 +26,25 @@ export default function Cell({ data, updateBoard, flagCell, flagDei}) {
     if (data.flagged) {
       return;
     }
+    
     console.log(e.type);
-    updateBoard(data.x, data.y);
+    updateBoard(data.x, data.y,e);
+    sumFlag();              
   };
 
   const onClickFlag = (e) => {   
     e.preventDefault();
-    flagCell(data.x, data.y);
-    flagDei(data.x, data.y);
+    if(!data.revealed){
+      flagCell(data.x, data.y); 
+      flagDei(data.x, data.y);        
+    }
   };
 
   return (
     <div
       style={style.block}
       onClick={(e) => onClickUpdate(e)}
-      onContextMenu={(e) => onClickFlag(e)}
+      onContextMenu={(e) => onClickFlag(e)}     
     >
       {data.flagged && !data.revealed ? (
             "🚩"

@@ -1,8 +1,8 @@
 
 import './App.css';
 import React from 'react';
-import Square from './Square';
 import Board from './Board';
+import Option from './Option';
 
 function App() {
   return (
@@ -23,8 +23,7 @@ function App() {
       </header>
     </div>
     */
-    <div className = "game">
-      {/*< Square />*/}
+    <div className = "App">
       <Board />
     </div>
   );
