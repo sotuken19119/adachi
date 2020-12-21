@@ -2,8 +2,8 @@
 import React,{ useState, useEffect } from "react";
 
 
-export default function Option ({resetflg , setFlg ,flgradio , flgstand, setOptionflg}) {
-    const [radio, setRadio] = useState(flgradio);
+export default function Option ({resetflg , setFlg ,FlagRadio , setOptionflg}) {
+    const [radio, setRadio] = useState(FlagRadio);
     const [render, setRender] = useState(false);
     useEffect(() => {
         setTimeout(() => {  // 時間を止める
@@ -11,8 +11,7 @@ export default function Option ({resetflg , setFlg ,flgradio , flgstand, setOpti
         }, 1000);
     }, []);
 
-    function mon(){
-        flgstand(radio);   
+    function mon(){　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
         resetflg(radio);
         setOptionflg(true);
     }
@@ -44,11 +43,12 @@ export default function Option ({resetflg , setFlg ,flgradio , flgstand, setOpti
                     /> 
             <br />
             <label>Hard</label>
-            <input type="radio" name="aradio" value="B" checked={radio === 'c'}
+            <input type="radio" name="aradio" value="C" checked={radio === 'c'}
                        onChange={() => setRadio("c")}
                     /> <br />
             <button onClick = {mon}>OK</button> 
             <button onClick = {cancel}>キャンセル</button>
+
         </div>
     );
     

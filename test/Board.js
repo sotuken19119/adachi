@@ -5,6 +5,9 @@ import { revealed } from "../util/reveal";
 import Modal from "./Modal";
 import Timer from "./Timer";
 import Option from "./Option";
+import Ranking from './Ranking';
+
+
 export default function Board() {
   const [board, setBoard] = useState([]);
   const [mineLocations, setMineLocations] = useState([]);
@@ -17,7 +20,11 @@ export default function Board() {
   const [newTime, setTime] = useState(0);
   const [flagCount, setFlagCount] = useState(0);
   const [revealLocation, setRevealLocation] = useState([]);
-  const [flgradio, setFlagRadio] = useState("a");
+  const [FlagRadio, setFlagRadio] = useState("");
+  const [restartflg,setRestartFlg] = useState(false);
+  const [flgRank,setflgRank] = useState(false);
+  
+  let flagset="a";
   let xbord=8;
   let ybord = 10;
   let bomCount = 5;
@@ -36,35 +43,72 @@ export default function Board() {
       setRestart(false);
       setFlg(false);
       setGameClear(false);
+      setflgRank(false);
       setRevealLocation([]);
+      setFlagRadio("a");
     };
     generateBoard();
   }, [restart, setRestart]);
 
   
-  const resetflg  = (x) =>{
-    switch(x){
-        case "a": xbord = 8; ybord = 10; bomCount = 5;
-        break;
-        case "b": xbord = 10; ybord = 15; bomCount = 15;
-        break;
-        case "c": xbord = 15; ybord = 20; bomCount = 30;
-        break;
-      }
-        const getBoard = CreateBoard(xbord, ybord, bomCount, setMineLocations);
-        setNonMinesCount(xbord*ybord - bomCount);
-        setFlagCount(bomCount);
-        setTime(0);
-        console.log("a");
-        setBoard(getBoard.board);
-        setMineLocations(getBoard.mineLocation);
-        setGameOver(false);
-        setRestart(false);
-        setFlg(false);
-        setGameClear(false);   
-        setRevealLocation([]);                                                                                                                                                                                                                
+  
+  const resetflg = (x) =>{
+    flagset = x;
+    restartmine(flagset);                                                                                                                                                                           
   };
+
+  const restartmine = (x) =>{
+    switch(x){
+      case "a": xbord = 8; ybord = 10; bomCount = 5;
+      break;
+      case "b": xbord = 10; ybord = 15; bomCount = 15;
+      break;
+      case "c": xbord = 15; ybord = 20; bomCount = 30;
+      break;
+    }
     
+      const getBoard = CreateBoard(xbord, ybord, bomCount, setMineLocations);
+      setNonMinesCount(xbord*ybord - bomCount);
+      setFlagCount(bomCount);
+      setTime(0);
+      setflgRank(false);
+      setBoard(getBoard.board);
+      setMineLocations(getBoard.mineLocation);
+      setGameOver(false);
+      setRestart(false);
+      setFlg(false);
+      setGameClear(false);   
+      setRevealLocation([]); 
+      setFlagRadio(x); 
+      setRestartFlg(true);
+  };   
+  // ゲーム終了後のリセット機能
+  const endGame = () =>{
+    endmine(FlagRadio);
+  }
+  const endmine = (x) =>{
+    switch(x){
+      case "a": xbord = 8; ybord = 10; bomCount = 5;
+      break;
+      case "b": xbord = 10; ybord = 15; bomCount = 15;
+      break;
+      case "c": xbord = 15; ybord = 20; bomCount = 30;
+      break;
+    }
+    const getBoard = CreateBoard(xbord, ybord, bomCount, setMineLocations);
+      setNonMinesCount(xbord*ybord - bomCount);
+      setFlagCount(bomCount);
+      setTime(0);
+      setflgRank(false);
+      setBoard(getBoard.board);
+      setMineLocations(getBoard.mineLocation);
+      setGameOver(false);
+      setRestart(false);
+      setFlg(false);
+      setGameClear(false);   
+      setRevealLocation([]); 
+      setFlagRadio(x); 
+  }
   
   const updateBoard = (x, y, e) => {
     let newBoardValues = JSON.parse(JSON.stringify(board));
@@ -133,11 +177,9 @@ export default function Board() {
     setFlagCount(flagCount + count);
   }
 
-
-
-  const flgstand = (x) =>{
-    setFlagRadio(x);
-  };
+  function changeRank(){
+    setflgRank(true);
+  }
 
   function changeOption(){
     setFlg(true);
@@ -147,8 +189,9 @@ export default function Board() {
     <div
       style={{ boxShadow: "0 4px 3px rgba(0,0,0,0.3)", position: "relative" }}
     >
-      {gameOver && <Modal reset={setRestart} completeTime={newTime} />}
-      {flg && <Option resetflg={resetflg} setFlg={setFlg} flgradio={flgradio} flgstand={flgstand} setOptionflg={setOptionflg}/>}
+      {gameOver && <Modal setGameOver={setGameOver} endGame={endGame}/>}
+      {flg && <Option resetflg={resetflg} setFlg={setFlg} FlagRadio={FlagRadio} setOptionflg={setOptionflg} endGame={endGame}/>}
+      {flgRank && <Ranking setflgRank={setflgRank} />}
       <div
         // 上側のツール画面のデザイン
         style={{
@@ -160,12 +203,15 @@ export default function Board() {
           alignItems: "center",
         }}
       >
+        <button onClick={() => restartmine(FlagRadio)}> re</button>
         <span role="img" aria-label="flag" style={{ paddingBottom: 10 }}>
         🚩 <span style={{ color: "white", fontSize: 20, }}>{flagCount}</span>     
         </span>   
         <button onClick={changeOption}>Option</button>
-        <Timer gameOver={gameOver} gameClear={gameClear} sendTime={setTime} 
-                setRestart={setRestart} setOptionflg={setOptionflg} optionflg={optionflg}/>
+        <Timer gameOver={gameOver} gameClear={gameClear} setGameClear={setGameClear} sendTime={setTime} 
+                 setOptionflg={setOptionflg} optionflg={optionflg} restartflg ={restartflg} setRestartFlg={setRestartFlg}
+                 endGame={endGame}/>
+        <button onClick={changeRank}>rank</button>
       </div>
       {board.map((row, inde) => {
           return (
