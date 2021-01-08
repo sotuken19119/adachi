@@ -60,7 +60,7 @@ const Board = () =>{
 
     let xboard = 8; //行の初期値
     let yboard = 10; //列の初期値
-    let bombCount = 5; //爆弾の数の初期値
+    let bombCount = 8; //爆弾の数の初期値
     let flagset = "a"; //難易度の初期値
 
     useEffect(() => {
@@ -138,11 +138,11 @@ const Board = () =>{
 
     const restartmine = (x) =>{
         switch(x){
-            case "a": xboard = 8; yboard = 10; bombCount = 5;
+            case "a": xboard = 8; yboard = 10; bombCount = 8;
             break;
-            case "b": xboard = 10; yboard = 15; bombCount = 15;
+            case "b": xboard = 10; yboard = 15; bombCount = 20;
             break;
-            case "c": xboard = 15; yboard = 20; bombCount = 30;
+            case "c": xboard = 15; yboard = 20; bombCount = 38;
             break;
             }
     　  //難易度を変えたときとリセットの時の初期化
@@ -244,7 +244,7 @@ const Board = () =>{
         sortDataNormal();
         sortDataHard();
       };
-      
+
       function sortDataEasy(){
         let x = 999999;
         let id = [1,2,3,4,5];
