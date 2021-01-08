@@ -1,51 +1,23 @@
 import React,{ useState, useEffect } from "react";
-import RankingEazy from "./RankingEazy";
+import RankingEasy from "./RankingEasy";
 import RankingNormal from "./RankingNormal";
 import RankingHard from "./RankingHard";
-import firebase from 'firebase';
-import 'firebase/storage';
 
-export default function Ranking ({setflgRank}){
-    const [render,setRender] = useState(false);
+export default function Ranking ({setFlgRank, data, userDataEasy, userDataNormal, userDataHard}){
+    const [render, setRender] = useState(false);
     const [radio,setRadio] = useState("a");
-    const [data, setData] = useState([]);
-    
-
     useEffect(() => {
         setTimeout(() => {  // 時間を止める
           setRender(true);
-        }, 1000);
-        getFireData();
-        
+        }, 100);
     }, []);
 
     function cancel(){
         setRender(false);
-        setflgRank(false);
+        setFlgRank(false);
     }
-    function getFireData(){
-        //database取得
-        let db = firebase.database();
-        //データパスの取得
-        let ref = db.ref("userInfo/");
-        let self=this;
-        //データ取得時のメソッド
-        ref
-            //並び変えメゾット
-            //キーによって並び変える
-            .orderByKey()
-            //フィルターメゾット
-            //最初から引数の数だけ取り出す
-            .limitToFirst(10)
-            //第一引数処理のイベント名
-            //snapshotはイベント時にうけとった
-            //データの情報をまとめたオブジェクト
-            .on('value',snapshot=>{
-                setData(snapshot.val());
-                
-            });
-            
-    }
+
+    
 
     return (
         <div
@@ -55,6 +27,7 @@ export default function Ranking ({setflgRank}){
                 width: "100%",
                 position: "absolute",
                 background: "rgba(0,0,0,0.3)",
+                zIndex: 5,
         }}
         >
             <div>Ranking</div>
@@ -75,11 +48,11 @@ export default function Ranking ({setflgRank}){
                 <br/>
                 <div>
                     {radio == "a" ? (
-                         <RankingEazy data={data}/> 
+                        <RankingEasy data={data} userDataEasy={userDataEasy}/> 
                     ):( radio == "b" ?(
-                        <RankingNormal data={data}/> 
+                        <RankingNormal data={data} userDataNormal={userDataNormal}/> 
                     ):(
-                        <RankingHard data={data}/>
+                        <RankingHard data={data} userDataHard={userDataHard}/>
                     )
                     )}                                
                 </div>
