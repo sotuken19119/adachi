@@ -244,6 +244,7 @@ const Board = () =>{
         sortDataNormal();
         sortDataHard();
       };
+      
       function sortDataEasy(){
         let x = 999999;
         let id = [1,2,3,4,5];

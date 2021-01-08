@@ -62,10 +62,8 @@ export default function Timer({ gameOver, gameClear, sendTime, setOptionflg , op
         }
       }
     }
-    
   }
 
-  
   useEffect(() => {
     // ゲームオーバーの処理
     if ((time > 0 && gameOver) || (time > 0 && gameClear)) {
@@ -91,7 +89,6 @@ export default function Timer({ gameOver, gameClear, sendTime, setOptionflg , op
     },1000);
 
     if(gameOver || gameClear || optionflg || restartflg || rogtimeflg) {
-      
       setOptionflg(false);
       setRestartflg(false);
       setRogTimeFlg(false);
@@ -99,7 +96,6 @@ export default function Timer({ gameOver, gameClear, sendTime, setOptionflg , op
       setTime(0);     // タイマーを0にリセット
     }
   }, [time, setTime, gameOver, gameClear, sendTime]);// 最初のマウント（DOMへのノードの追加)の時と指定された値に変化があった場合のみに第１引数の関数を実行。
-
   
   return (
     <span
@@ -107,16 +103,14 @@ export default function Timer({ gameOver, gameClear, sendTime, setOptionflg , op
         color: "#000000", 
         fontSize: 50,
       }}>
-        
-        <span 
-          role="img" 
-          aria-label="clock" 
-          style={{
-            fontSize: 50,
-          }}>
-            ⏰
-        </span>
-
+      <span 
+        role="img" 
+        aria-label="clock" 
+        style={{
+          fontSize: 50,
+        }}>
+          ⏰
+      </span>
       {checkGame() ? sTime : time} {/* ゲームオーバーなら終了時のタイムを表示、違うならタイムを表示 */}
     </span>
   );
